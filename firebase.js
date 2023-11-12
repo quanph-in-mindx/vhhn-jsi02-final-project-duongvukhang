@@ -28,7 +28,7 @@ const signinWithGoogle = ()=> {
             // The signed-in user info.
             const user = result.user;
             localStorage.setItem("user" , JSON.stringify(user));
-            window.location.href = "./f.html";
+            window.location.href = "./index.html";
             // IdP data available using getAdditionalUserInfo(result)
             // ...
         }).catch((error) => {
