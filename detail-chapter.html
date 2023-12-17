@@ -8,6 +8,8 @@
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="./alpine.js" defer></script>
+    <link rel="stylesheet" href="./index.css">
+    
 </head>
 
 <body>
@@ -139,6 +141,13 @@
         </div>
     </nav>
     <!-- end -->
+    <div class="tdnn">
+        <div class="moon">
+       </div>
+   </div>
+   <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+   <script src="./index.js"></script>
+  
 
     <section class="text-gray-600 body-font">
         <div class="container px-5 py-24 mx-auto">
@@ -156,7 +165,7 @@
                 <a href="" id="prev"
                     class="flex text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">chapter
                     truoc</a>
-                <a id="next"
+                <a href="" id="next"
                     class="flex text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">chapter
                     sau</a>
             </div>
@@ -246,6 +255,8 @@
 
 
                 document.getElementById('prev').href = `/detail-chapter.html?id=${id}&chapter=${chapter.id}=${chapter - 1}`;
+                    
+                
                 document.getElementById('next').href = `/detail-chapter.html?id=${id}&chapter=${chapter.id}=${chapter + 1}`;
 
 
@@ -253,6 +264,13 @@
             .catch(function (error) {
                 console.log(error);
             });
+            
+       
+
+ 
+               
+
+                
     </script>
 </body>
 
