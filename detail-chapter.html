@@ -9,10 +9,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="./alpine.js" defer></script>
     <link rel="stylesheet" href="./index.css">
-    
+
 </head>
 
-<body>
+<body class="light">
     <header class="text-gray-600 body-font bg-[rgb(238,238,238)]">
 
 
@@ -23,8 +23,8 @@
                 <a class="mr-5 hover:text-gray-900">CÁC THỂ LOẠI</a>
 
             </nav>
-            <a
-                class="flex order-first lg:order-none lg:w-1/5 title-font font-medium items-center text-gray-900 lg:items-center lg:justify-center mb-4 md:mb-0 " href="./home.html">
+            <a class="flex order-first lg:order-none lg:w-1/5 title-font font-medium items-center text-gray-900 lg:items-center lg:justify-center mb-4 md:mb-0 "
+                href="./home.html">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round"
                     stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
                     viewBox="0 0 24 24">
@@ -36,7 +36,8 @@
 
             <div class="lg:w-2/5 inline-flex lg:justify-end ml-5 lg:ml-0">
                 <a href="./search.html"
-                    class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0" href="./search.html">Tìm kiếm
+                    class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
+                    href="./search.html">Tìm kiếm
                     <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7"></path>
@@ -89,9 +90,9 @@
                     </button>
                 </li>
                 <li>
-                   
+
                 </li>
-               
+
             </ul>
         </div>
         <div x-ref="navigationDropdown" x-show="navigationMenuOpen"
@@ -117,7 +118,7 @@
                                     fill="currentColor" />
                             </svg>
                             <span class="block font-bold">Tên tài khoản:</span>
-                   
+
                         </div>
                     </div>
                     <div class="w-72">
@@ -133,21 +134,21 @@
                             <span class="block leading-5 opacity-50">Email.....
                                 .</span>
                         </a>
-                       
+
                     </div>
                 </div>
-               
+
             </div>
         </div>
     </nav>
     <!-- end -->
-    <div class="tdnn">
-        <div class="moon">
-       </div>
-   </div>
-   <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-   <script src="./index.js"></script>
-  
+    <div class="tdnn day">
+        <div class="moon sun">
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="./index.js"></script>
+
 
     <section class="text-gray-600 body-font">
         <div class="container px-5 py-24 mx-auto">
@@ -230,6 +231,21 @@
         const chapter = Number(urlParams.get('chapter'));
         const pagesContainer = document.getElementById("pages")
 
+        function getNextAndPrevChapters(currentChapter, chapters) {
+            // Vi tri cua chapter hien tai trong danh sach chapters
+            const currentIndex = chapters.findIndex(item => item.id == chapter);
+            
+            return {
+                next: chapters[currentIndex - 1],
+                prev: chapters[currentIndex + 1],
+            }
+        }
+
+        function getCurrentChapter(currentChapter, chapters) {
+            // gia tri cua chapter hien tai trong danh sach chapters
+            return chapters.find(item => item.id == chapter);
+        }
+
         axios.get(`https://comics-api.vercel.app/comics/${id}`)
             .then(function (response) {
                 const comic = response.data
@@ -244,33 +260,34 @@
 
         axios.get(`https://comics-api.vercel.app/comics/${id}/chapters/${chapter}`)
             .then(function (response) {
-                const comic = response.data
-                console.log(comic);
-                document.getElementById('chapter').innerHTML = comic.chapter_name;
+                const comic = response.data;
                 comic.images.forEach(element => {
                     pagesContainer.innerHTML += `
                     <img src="${element.src}" alt="" class="w-full rounded">
                     `
                 });
 
+                const currentChapter = getCurrentChapter(chapter, comic.chapters)
+                document.getElementById('chapter').innerHTML = currentChapter.name;
+                const nextAndPrev = getNextAndPrevChapters(chapter, comic.chapters);
 
-                document.getElementById('prev').href = `/detail-chapter.html?id=${id}&chapter=${chapter.id}=${chapter - 1}`;
-                    
-                
-                document.getElementById('next').href = `/detail-chapter.html?id=${id}&chapter=${chapter.id}=${chapter + 1}`;
-
-
+                if (nextAndPrev.next) {
+                    document.getElementById('next').href = `/detail-chapter.html?id=${id}&chapter=${nextAndPrev.next.id}`;
+                    document.getElementById('next').innerHTML = nextAndPrev.next.name;
+                } else {
+                    document.getElementById('next').remove();
+                }
+                if (nextAndPrev.prev) {
+                    document.getElementById('prev').href = `/detail-chapter.html?id=${id}&chapter=${nextAndPrev.prev.id}`;
+                    document.getElementById('prev').innerHTML = nextAndPrev.prev.name;
+                } else {
+                    document.getElementById('prev').remove();
+                }
             })
             .catch(function (error) {
                 console.log(error);
             });
-            
-       
 
- 
-               
-
-                
     </script>
 </body>
 
